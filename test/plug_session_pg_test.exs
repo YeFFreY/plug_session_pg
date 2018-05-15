@@ -1,16 +1,17 @@
 defmodule PlugSessionPgTest do
-  use ExUnit.Case
+  use PlugSessionPg.DataCase
   alias PlugSessionPg.Store, as: Subject
-
-  @table "table_name"
-  @default_table "plug_session"
+  alias TestRepo
 
   describe "init/1" do
-    test "returns the table configuration if given" do
-      assert Subject.init(table: @table) == @table
+    test "returns the given repo" do
+      assert Subject.init(repo: TestRepo) === TestRepo
     end
-    test "returns the default table configuration if none given" do
-      assert Subject.init(none: "none") == @default_table
+
+    test "Error raised when repo not given as option" do
+      assert_raise KeyError, fn ->
+        Subject.init(none: "none")
+      end
     end
   end
 end

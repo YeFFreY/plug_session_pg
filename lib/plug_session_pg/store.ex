@@ -4,10 +4,7 @@ defmodule PlugSessionPg.Store do
 
   def init(opts) do
     IO.inspect opts
-    case Keyword.fetch(opts, :table) do
-      {:ok, value} -> value
-      :error -> @default_table_name
-    end
+    Keyword.fetch!(opts, :repo)
   end
 
   def get(_conn, sid, table) do
