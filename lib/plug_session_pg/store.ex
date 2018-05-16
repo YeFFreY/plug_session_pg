@@ -1,26 +1,40 @@
 defmodule PlugSessionPg.Store do
+  require Logger
   @behaviour Plug.Session.Store
-  @default_table_name "plug_session"
 
+  @impl true
   def init(opts) do
+    Logger.info "init store"
     IO.inspect opts
     Keyword.fetch!(opts, :repo)
   end
 
-  def get(_conn, sid, table) do
-    {sid, nil}
+  @impl true
+  def get(_conn, sid, repo) do
+    Logger.info "get store"
+    IO.inspect sid
+    {sid, %{name: "bouboule"}}
   end
 
-  def put(_conn, nil, data, table) do
+  @impl true
+  def put(_conn, nil, data, repo) do
+    Logger.info "put nil store"
+    IO.inspect data
     sid = Base.encode64(:crypto.strong_rand_bytes(96))
+    IO.inspect sid
     sid
   end
 
-  def put(_conn, sid, data, table) do
+  def put(_conn, sid, data, repo) do
+    Logger.info "put sid store"
+    IO.inspect sid
+    IO.inspect data
     sid
   end
 
-  def delete(_conn, sid, table) do
+  @impl true
+  def delete(_conn, sid, repo) do
+    Logger.info "delete from store"
     :ok
   end
 end
