@@ -29,7 +29,8 @@ defmodule PlugSessionPg.MixProject do
     [
       {:plug, "~> 1.0"},
       {:ecto, "~> 2.1"},
-      {:postgrex, ">= 0.0.0", only: :test}
+      {:postgrex, ">= 0.0.0", only: :test},
+      {:poison, "~> 3.1"}
     ]
   end
 

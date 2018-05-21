@@ -4,8 +4,6 @@ defmodule PlugSessionPg.Store do
 
   @impl true
   def init(opts) do
-    Logger.info "init store"
-    IO.inspect opts
     Keyword.fetch!(opts, :repo)
   end
 
@@ -18,10 +16,8 @@ defmodule PlugSessionPg.Store do
 
   @impl true
   def put(_conn, nil, data, repo) do
-    Logger.info "put nil store"
-    IO.inspect data
     sid = Base.encode64(:crypto.strong_rand_bytes(96))
-    IO.inspect sid
+    repo.insert_all "plug_sessions", [[sid: sid, data: data]]
     sid
   end
 
