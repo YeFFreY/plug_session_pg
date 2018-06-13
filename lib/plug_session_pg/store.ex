@@ -2,6 +2,7 @@ defmodule PlugSessionPg.Store do
   import Ecto.Query
   require Logger
   @behaviour Plug.Session.Store
+  import Ecto.Query, only: [from: 2]
 
   @impl true
   def init(opts) do
@@ -19,6 +20,8 @@ defmodule PlugSessionPg.Store do
     {sid, data}
   end
 
+  def put(conn, nil, nil, repo), do: put(conn, nil, %{}, repo)
+
   @impl true
   def put(_conn, nil, data, repo) do
     sid = Base.encode64(:crypto.strong_rand_bytes(96))
@@ -27,15 +30,13 @@ defmodule PlugSessionPg.Store do
   end
 
   def put(_conn, sid, data, repo) do
-    Logger.info "put sid store"
-    IO.inspect sid
-    IO.inspect data
+    session = from s in "plug_sessions", where: s.sid == ^sid
+    repo.update_all session, set: [data: data, last_modified: NaiveDateTime.utc_now]
     sid
   end
 
   @impl true
   def delete(_conn, sid, repo) do
-    Logger.info "delete from store"
     :ok
   end
 
