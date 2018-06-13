@@ -1,4 +1,5 @@
 defmodule PlugSessionPg.Store do
+  import Ecto.Query
   require Logger
   @behaviour Plug.Session.Store
 
@@ -11,7 +12,11 @@ defmodule PlugSessionPg.Store do
   def get(_conn, sid, repo) do
     Logger.info "get store"
     IO.inspect sid
-    {sid, %{name: "bouboule"}}
+    data = sid
+      |> plug_session_query 
+      |> repo.one 
+      |> to_map
+    {sid, data}
   end
 
   @impl true
@@ -32,5 +37,14 @@ defmodule PlugSessionPg.Store do
   def delete(_conn, sid, repo) do
     Logger.info "delete from store"
     :ok
+  end
+
+  defp plug_session_query(sid) do
+    from s in "plug_sessions",
+    where: s.sid == ^sid,
+    select: s.data
+  end
+  defp to_map(data) do
+    Map.new(data, fn {k, v} -> { String.to_existing_atom(k), v} end)
   end
 end
