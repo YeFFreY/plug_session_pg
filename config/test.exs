@@ -11,5 +11,4 @@ config :plug_session_pg, TestRepo,
   pool: Ecto.Adapters.SQL.Sandbox,
   priv: "test/support"
 
-  config :plug_session_pg,
-    ecto_repos: [TestRepo]
+config :plug_session_pg, ecto_repos: [TestRepo]

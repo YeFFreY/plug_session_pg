@@ -9,6 +9,22 @@ defmodule PlugSessionPg.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import PlugSessionPg.DataCase
+
+      defp lookup_session_data(sid) do
+        query =
+          from(
+            s in "plug_sessions",
+            where: s.sid == ^sid,
+            select: s.data
+          )
+
+        result = TestRepo.one(query)
+
+        case result do
+          nil -> nil
+          data -> data |> Map.new(fn {k, v} -> {String.to_existing_atom(k), v} end)
+        end
+      end
     end
   end
 
@@ -20,13 +36,5 @@ defmodule PlugSessionPg.DataCase do
     end
 
     :ok
-  end
-
-  def errors_on(changeset) do
-    Ecto.Changeset.traverse_errors(changeset, fn {message, opts} ->
-      Enum.reduce(opts, message, fn {key, value}, acc ->
-        String.replace(acc, "%{#{key}}", to_string(value))
-      end)
-    end)
   end
 end
