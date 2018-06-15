@@ -1,6 +1,6 @@
 # PlugSessionPg
 
-**TODO: Add description**
+Use PostgreSQL (ecto...) as session store.
 
 ## Installation
 
