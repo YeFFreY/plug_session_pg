@@ -1,11 +1,18 @@
 defmodule PlugSessionPg.Store do
-  require Logger
   @behaviour Plug.Session.Store
+
   import Ecto.Query, only: [from: 2]
+
+  alias PlugSessionPg.RepoNotDefined
 
   @impl true
   def init(opts) do
-    Keyword.fetch!(opts, :repo)
+    with :error <- Keyword.fetch(opts, :repo),
+         :error <- Application.fetch_env(:plug_session_pg, :repo) do
+      raise RepoNotDefined
+    else
+      {:ok, repo} -> repo
+    end
   end
 
   @impl true

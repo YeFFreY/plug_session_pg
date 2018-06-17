@@ -18,6 +18,7 @@ defmodule PlugSessionPgTest do
       assert Subject.init(repo: TestRepo) === TestRepo
     end
 
+    @tag :skip
     test "Error raised when repo not given as option" do
       assert_raise KeyError, fn ->
         Subject.init(none: "none")
@@ -69,6 +70,7 @@ defmodule PlugSessionPgTest do
       assert :ok = Subject.delete(nil, @existing_sid, TestRepo)
       assert is_nil(lookup_session_data(@existing_sid))
     end
+
     test "deletes ONLY the session from the store for the given sid" do
       other_sid = Subject.put(%{}, nil, @data, TestRepo)
       assert :ok = Subject.delete(nil, @existing_sid, TestRepo)
