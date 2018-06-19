@@ -5,29 +5,24 @@ defmodule Mix.Tasks.PlugSessionPg.Install do
   import Mix.Ecto
 
   @shortdoc "Generate migration script for plug session table"
-  def run(_) do
+  def run([module_name]) do
     gen_session_migration_change
-    |> gen_migration
+    |> gen_migration(module_name)
   end
 
-  defp gen_migration(change) do
-    repo = get_application_repo
-    path = Path.relative_to(migrations_path(repo), Mix.Project.app_path())
-    file = Path.join(path, "#{timestamp}_create_plug_sessions.exs")
-    mod = Module.concat([repo, Migrations, CreatePlugSessions])
-    create_file(file, migration_template(mod: mod, change: change))
-    file
+  defp gen_migration(change, module_name) do
+    repo = get_application_repo(module_name)
+    IO.inspect module_name
+
+#    path = Path.relative_to(migrations_path(repo), Mix.Project.app_path())
+#    file = Path.join(path, "#{timestamp}_create_plug_sessions.exs")
+#    mod = Module.concat([repo, Migrations, CreatePlugSessions])
+#    create_file(file, migration_template(mod: mod, change: change))
+#    file
   end
 
-  defp get_application_repo do
-    repo =
-      Mix.Project.config()
-      |> Keyword.fetch!(:app)
-      |> Atom.to_string()
-      |> Mix.Phoenix.inflect()
-      |> Keyword.fetch!(:base)
-      |> Module.concat("Repo")
-
+  defp get_application_repo(module_name) do
+    repo = Module.concat(module_name, "Repo")
     ensure_repo(repo, [])
     repo
   end
