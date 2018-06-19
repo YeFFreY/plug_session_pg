@@ -4,6 +4,7 @@ defmodule PlugSessionPgTest do
 
   alias PlugSessionPg.Store, as: Subject
   alias TestRepo
+  alias PlugSessionPg.RepoNotDefined
 
   @existing_sid "existing_session"
   @data %{message: "the message in the session"}
@@ -14,16 +15,23 @@ defmodule PlugSessionPgTest do
   end
 
   describe "init/1" do
-    test "returns the given repo when repo provided" do
+    test "returns the given repo when repo provided through config" do
+      Application.put_env(:plug_session_pg, :repo, TestRepo)
+      assert Subject.init(none: "none") === TestRepo
+    end
+
+    test "returns the given repo only provided through init method" do
+      Application.delete_env(:plug_session_pg, :repo)
       assert Subject.init(repo: TestRepo) === TestRepo
     end
 
-    @tag :skip
-    test "Error raised when repo not given as option" do
-      assert_raise KeyError, fn ->
+    test "Error raised when repo not given as option neither from the application config or the init method" do
+      Application.delete_env(:plug_session_pg, :repo)
+      assert_raise RepoNotDefined, fn ->
         Subject.init(none: "none")
       end
     end
+
   end
 
   describe "put/4" do
