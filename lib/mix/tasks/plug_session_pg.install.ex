@@ -12,13 +12,11 @@ defmodule Mix.Tasks.PlugSessionPg.Install do
 
   defp gen_migration(change, module_name) do
     repo = get_application_repo(module_name)
-    IO.inspect module_name
-
-#    path = Path.relative_to(migrations_path(repo), Mix.Project.app_path())
-#    file = Path.join(path, "#{timestamp}_create_plug_sessions.exs")
-#    mod = Module.concat([repo, Migrations, CreatePlugSessions])
-#    create_file(file, migration_template(mod: mod, change: change))
-#    file
+    path = Path.relative_to(migrations_path(repo), Mix.Project.app_path())
+    file = Path.join(path, "#{timestamp}_create_plug_sessions.exs")
+    mod = Module.concat([repo, Migrations, CreatePlugSessions])
+    create_file(file, migration_template(mod: mod, change: change))
+    file
   end
 
   defp get_application_repo(module_name) do
