@@ -4,16 +4,20 @@ defmodule Mix.Tasks.PlugSessionPg.Install do
   import Mix.Generator
   import Mix.Ecto
 
+  @script_name_suffix "_create_plug_sessions.exs"
+
   @shortdoc "Generate migration script for plug session table"
   def run([module_name]) do
-    gen_session_migration_change
+    gen_session_migration_change()
     |> gen_migration(module_name)
+  rescue
+    Mix.Error -> Mix.shell().error(PlugSessionPg.RepoNotFound.message(module_name))
   end
 
   defp gen_migration(change, module_name) do
     repo = get_application_repo(module_name)
     path = Path.relative_to(migrations_path(repo), Mix.Project.app_path())
-    file = Path.join(path, "#{timestamp}_create_plug_sessions.exs")
+    file = Path.join(path, "#{timestamp()}#{@script_name_suffix}")
     mod = Module.concat([repo, Migrations, CreatePlugSessions])
     create_file(file, migration_template(mod: mod, change: change))
     file
@@ -26,7 +30,7 @@ defmodule Mix.Tasks.PlugSessionPg.Install do
   end
 
   defp gen_session_migration_change do
-    migration = """
+    """
       create table(:plug_sessions) do
         add(:sid, :string, null: false)
         add(:data, :map, null: false)
