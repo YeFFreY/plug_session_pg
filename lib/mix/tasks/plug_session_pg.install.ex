@@ -12,6 +12,7 @@ defmodule Mix.Tasks.PlugSessionPg.Install do
     |> gen_migration(module_name)
   rescue
     Mix.Error -> Mix.shell().error(PlugSessionPg.RepoNotFound.message(module_name))
+    :error
   end
 
   defp gen_migration(change, module_name) do
