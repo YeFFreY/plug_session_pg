@@ -3,7 +3,7 @@ defmodule PlugSessionPg.DataCase do
 
   using do
     quote do
-      alias TestRepo
+      alias TestPlugSessionPg.Repo, as: TestRepo
 
       import Ecto
       import Ecto.Changeset
@@ -29,10 +29,10 @@ defmodule PlugSessionPg.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(TestRepo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(TestPlugSessionPg.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(TestRepo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(TestPlugSessionPg.Repo, {:shared, self()})
     end
 
     :ok

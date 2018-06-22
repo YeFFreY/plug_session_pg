@@ -11,8 +11,9 @@ defmodule Mix.Tasks.PlugSessionPg.Install do
     gen_session_migration_change()
     |> gen_migration(module_name)
   rescue
-    Mix.Error -> Mix.shell().error(PlugSessionPg.RepoNotFound.message(module_name))
-    :error
+    Mix.Error ->
+      Mix.shell().error(PlugSessionPg.RepoNotFound.message(module_name))
+      :error
   end
 
   defp gen_migration(change, module_name) do
@@ -21,7 +22,8 @@ defmodule Mix.Tasks.PlugSessionPg.Install do
     file = Path.join(path, "#{timestamp()}#{@script_name_suffix}")
     mod = Module.concat([repo, Migrations, CreatePlugSessions])
     create_file(file, migration_template(mod: mod, change: change))
-    file
+    IO.inspect(file)
+    {:ok, file}
   end
 
   defp get_application_repo(module_name) do

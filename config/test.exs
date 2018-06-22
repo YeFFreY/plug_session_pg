@@ -2,7 +2,7 @@ use Mix.Config
 
 config :logger, level: :warn
 
-config :plug_session_pg, TestRepo,
+config :plug_session_pg, TestPlugSessionPg.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
@@ -12,5 +12,5 @@ config :plug_session_pg, TestRepo,
   priv: "test/support"
 
 config :plug_session_pg,
-  repo: TestRepo,
-  ecto_repos: [TestRepo]
+  repo: TestPlugSessionPg.Repo,
+  ecto_repos: [TestPlugSessionPg.Repo]

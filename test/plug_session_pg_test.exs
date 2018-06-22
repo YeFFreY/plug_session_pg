@@ -3,7 +3,7 @@ defmodule PlugSessionPgTest do
   import Ecto.Query, only: [from: 2]
 
   alias PlugSessionPg.Store, as: Subject
-  alias TestRepo
+  alias TestPlugSessionPg.Repo, as: TestRepo
   alias PlugSessionPg.RepoNotDefined
 
   @existing_sid "existing_session"
@@ -27,11 +27,11 @@ defmodule PlugSessionPgTest do
 
     test "Error raised when repo not given as option neither from the application config or the init method" do
       Application.delete_env(:plug_session_pg, :repo)
+
       assert_raise RepoNotDefined, fn ->
         Subject.init(none: "none")
       end
     end
-
   end
 
   describe "put/4" do

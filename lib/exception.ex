@@ -13,6 +13,7 @@ defmodule PlugSessionPg.RepoNotDefined do
     """
   end
 end
+
 defmodule PlugSessionPg.RepoNotFound do
   @moduledoc """
   Error raised when `Mix.Tasks.PlugSessionPg.Install' does not find the repo based on the given module
