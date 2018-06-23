@@ -1,4 +1,4 @@
-defmodule PlugSessionPgTest do
+defmodule PlugSessionPgTest.StoreTest do
   use PlugSessionPg.DataCase
   import Ecto.Query, only: [from: 2]
 
