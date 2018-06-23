@@ -25,6 +25,17 @@ defmodule PlugSessionPg.DataCase do
           data -> data |> Map.new(fn {k, v} -> {String.to_existing_atom(k), v} end)
         end
       end
+
+      defp lookup_session_last_accessed(sid) do
+        query =
+          from(
+            s in "plug_sessions",
+            where: s.sid == ^sid,
+            select: type(fragment("last_accessed"), :naive_datetime)
+          )
+
+        TestRepo.one(query)
+      end
     end
   end
 

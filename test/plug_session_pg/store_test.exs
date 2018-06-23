@@ -67,6 +67,13 @@ defmodule PlugSessionPgTest.StoreTest do
       assert Subject.get(nil, @existing_sid, TestRepo) == {@existing_sid, @data}
     end
 
+    test "updates the last_accessed timestamp" do
+      before_last_accessed = lookup_session_last_accessed(@existing_sid)
+      Subject.get(nil, @existing_sid, TestRepo)
+      after_last_accessed = lookup_session_last_accessed(@existing_sid)
+
+      assert NaiveDateTime.compare(after_last_accessed, before_last_accessed) == :gt
+    end
     test "returns a nil session if it does not exists in the store" do
       unknown_sid = "unknown_sid"
       assert Subject.get(nil, unknown_sid, TestRepo) == {nil, %{}}
