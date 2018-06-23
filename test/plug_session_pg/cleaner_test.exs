@@ -16,7 +16,7 @@ defmodule PlugSessionPgTest.CleanerTest do
     :ok
   end
 
-  describe "start_link/0" do
+  describe "start_link/1" do
     test "starts the GenServer if required configuration is found" do
       Application.put_env(:plug_session_pg, :repo, TestRepo)
       Application.put_env(:plug_session_pg, :max_age, 1)

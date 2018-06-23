@@ -13,4 +13,5 @@ config :plug_session_pg, TestPlugSessionPg.Repo,
 
 config :plug_session_pg,
   repo: TestPlugSessionPg.Repo,
+  max_age: 60,
   ecto_repos: [TestPlugSessionPg.Repo]

@@ -6,7 +6,7 @@ defmodule PlugSessionPg do
 
   def start(_type, _args) do
     children = [PlugSessionPg.Cleaner]
-    opts = [strategy: :one_for_one, name: PlugSessionPg.Cleaner]
+    opts = [strategy: :one_for_one, name: PlugSessionPg.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end

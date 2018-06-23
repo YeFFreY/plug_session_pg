@@ -18,9 +18,9 @@ defmodule Mix.Tasks.PlugSessionPg.InstallTest do
         assert file =~ "add(:data, :map, null: false)"
 
         assert file =~
-                 "add(:last_accessed, :naive_datetime, null: false, default: fragment(\"now()\"))"
+                 "add(:last_accessed, :naive_datetime, null: false, default: fragment(\"(now() at time zone 'utc')\"))"
 
-        assert file =~ "add(:created, :naive_datetime, null: false, default: fragment(\"now()\"))"
+        assert file =~ "add(:created, :naive_datetime, null: false, default: fragment(\"(now() at time zone 'utc')\"))"
         assert file =~ "end"
         assert file =~ "create(unique_index(:plug_sessions, [:sid]))"
       end)
