@@ -18,7 +18,7 @@ defmodule Mix.Tasks.PlugSessionPg.InstallTest do
         assert file =~ "add(:data, :map, null: false)"
 
         assert file =~
-                 "add(:last_modified, :naive_datetime, null: false, default: fragment(\"now()\"))"
+                 "add(:last_accessed, :naive_datetime, null: false, default: fragment(\"now()\"))"
 
         assert file =~ "add(:created, :naive_datetime, null: false, default: fragment(\"now()\"))"
         assert file =~ "end"

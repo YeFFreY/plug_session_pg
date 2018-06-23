@@ -36,7 +36,13 @@ defmodule PlugSessionPg.Cleaner do
   def clean_sessions(repo, max_age) do
     IO.inspect("working")
     count = -max_age
-    sessions_to_delete = from(s in "plug_sessions", where: s.last_modified < datetime_add(^NaiveDateTime.utc_now, ^count, "second"))
+
+    sessions_to_delete =
+      from(
+        s in "plug_sessions",
+        where: s.last_accessed < datetime_add(^NaiveDateTime.utc_now(), ^count, "second")
+      )
+
     repo.delete_all(sessions_to_delete)
   end
 

@@ -39,7 +39,7 @@ defmodule PlugSessionPg.Store do
 
   def put(_conn, sid, data, repo) do
     session = from(s in "plug_sessions", where: s.sid == ^sid)
-    repo.update_all(session, set: [data: data, last_modified: NaiveDateTime.utc_now()])
+    repo.update_all(session, set: [data: data, last_accessed: NaiveDateTime.utc_now()])
     sid
   end
 
