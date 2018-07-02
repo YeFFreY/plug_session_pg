@@ -35,7 +35,6 @@ defmodule PlugSessionPg.Cleaner do
   end
 
   def clean_sessions(repo, max_age) do
-    IO.inspect("working")
     older = NaiveDateTime.add(NaiveDateTime.utc_now(), -max_age, :second)
 
     sessions_to_delete =

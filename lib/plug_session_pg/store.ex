@@ -26,7 +26,7 @@ defmodule PlugSessionPg.Store do
       nil -> {nil, %{}}
       data -> 
         session = from(s in "plug_sessions", where: s.sid == ^sid)
-        repo.update_all(session, set: [data: data, last_accessed: NaiveDateTime.utc_now()])
+        repo.update_all(session, set: [last_accessed: NaiveDateTime.utc_now()])
         {sid, to_map(data)}
     end
   end
